@@ -3,11 +3,22 @@ package util
 import (
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func Test_WaitFunc(t *testing.T) {
-	t.Log("这个测试很花时间。。。")
+func Test_DateOf(t *testing.T) {
+	timestamp := int64(1136185384)
+	expected := "2006-01-02 15:03:04 +0800 CST"
+	assert.Equal(t, expected, DateOf(timestamp))
+}
 
+func wrongDuration(beginTime time.Time, Duration, checkCycle time.Duration) bool {
+	return time.Since(beginTime) < Duration ||
+		Duration+checkCycle < time.Since(beginTime)
+}
+
+func Test_WaitFunc(t *testing.T) {
 	beginTime := time.Now()
 	checkCycle := time.Millisecond * 100
 
@@ -15,8 +26,8 @@ func Test_WaitFunc(t *testing.T) {
 
 	wait()
 	t.Log(time.Now())
-	waitTime1 := checkCycle
-	if time.Since(beginTime) < waitTime1 || waitTime1+checkCycle < time.Since(beginTime) {
+	waitDuration := checkCycle
+	if wrongDuration(beginTime, waitDuration, checkCycle) {
 		t.Error("wait()在最小时间前结束了。")
 	}
 
@@ -24,8 +35,8 @@ func Test_WaitFunc(t *testing.T) {
 	waitCh <- updateCycle2
 	wait()
 	t.Log(time.Now())
-	waitTime2 := waitTime1 + updateCycle2
-	if time.Since(beginTime) < waitTime2 || waitTime2+checkCycle < time.Since(beginTime) {
+	waitDuration += updateCycle2
+	if wrongDuration(beginTime, waitDuration, checkCycle) {
 		t.Error("wait()没能在updateCycle结束前，修改为更大的updateCycle")
 	}
 
@@ -36,10 +47,20 @@ func Test_WaitFunc(t *testing.T) {
 	}()
 	wait()
 	t.Log(time.Now())
-	waitTime3 := waitTime2 + updateCycle3
-	if time.Since(beginTime) < waitTime3 || waitTime3+checkCycle < time.Since(beginTime) {
+	waitDuration += updateCycle3
+	if wrongDuration(beginTime, waitDuration, checkCycle) {
 		t.Error("wait()没能在updateCycle结束前，修改为更小的updateCycle")
 	}
+}
+func Test_SleepFunc(t *testing.T) {
+	beginTime := time.Now()
+	waitDuration := 100 * time.Millisecond
+	deltaDuration := 2 * time.Millisecond
+
+	sleep := SleepFunc(waitDuration)
+	sleep()
+	assert.True(t, !wrongDuration(beginTime, waitDuration, deltaDuration),
+		"sleep() 没有休眠正确的时间：%s", waitDuration)
 }
 
 func Test_ParseLocalTime(t *testing.T) {
