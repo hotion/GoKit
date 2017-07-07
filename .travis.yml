@@ -3,6 +3,11 @@ language: go
 go:
   - 1.8.x
   - tip
+  
+# blocklist
+branches:
+  except:
+  - develop 
 
 before_install:
   - go get -t -v ./...
