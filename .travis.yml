@@ -3,8 +3,10 @@ language: go
 go:
   - 1.8.3
   - master
-
-script: go test -v -f -race 
+before_script:
+  - go get -v ./...
+  
+script: go test -v  -race 
 
 notifications:
   webhooks: https://hooks.pubu.im/services/3wp9q4yqlzm8fxr
