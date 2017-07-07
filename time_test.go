@@ -1,4 +1,4 @@
-package util
+package GoKit
 
 import (
 	"testing"
@@ -55,10 +55,11 @@ func Test_WaitFunc(t *testing.T) {
 func Test_SleepFunc(t *testing.T) {
 	beginTime := time.Now()
 	waitDuration := 100 * time.Millisecond
-	deltaDuration := 2 * time.Millisecond
+	deltaDuration := 3 * time.Millisecond
 
 	sleep := SleepFunc(waitDuration)
 	sleep()
+	t.Logf("sleep() 预计休眠%s, 实际休眠%s", waitDuration, time.Since(beginTime))
 	assert.True(t, !wrongDuration(beginTime, waitDuration, deltaDuration),
 		"sleep() 没有休眠正确的时间：%s", waitDuration)
 }

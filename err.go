@@ -6,7 +6,7 @@
 //*Err实现Error()后，是满足error接口的类型
 //
 
-package util
+package GoKit 
 
 import "fmt"
 
