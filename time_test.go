@@ -1,18 +1,20 @@
 package GoKit
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
-// TODO: 修复这个
-// func Test_DateOf(t *testing.T) {
-// 	timestamp := int64(1136185384)
-// 	expected := "2006-01-02 15:03:04 +0800 CST"
-// 	assert.Equal(t, expected, DateOf(timestamp))
-// }
+func Test_DateOf(t *testing.T) {
+	timestamp := 1136185384 + 28800 // "2006-01-02 15:03:04 +0000 UTC"
+	tm := time.Now()
+	zone, offset := tm.Zone()
+	expected := fmt.Sprintf("2006-01-02 15:03:04 +%02d00 %s", offset/3600, zone)
+	assert.Equal(t, expected, DateOf(int64(timestamp-offset)))
+}
 
 func wrongDuration(beginTime time.Time, Duration, checkCycle time.Duration) bool {
 	return time.Since(beginTime) < Duration ||
