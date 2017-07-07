@@ -51,6 +51,9 @@ func Test_WaitFunc(t *testing.T) {
 	if wrongDuration(beginTime, waitDuration, checkCycle) {
 		t.Error("wait()没能在updateCycle结束前，修改为更小的updateCycle")
 	}
+
+	waitCh <- checkCycle / 2
+	wait()
 }
 func Test_SleepFunc(t *testing.T) {
 	beginTime := time.Now()
@@ -66,10 +69,13 @@ func Test_SleepFunc(t *testing.T) {
 
 func Test_ParseLocalTime(t *testing.T) {
 	now := time.Now()
-	nowStr := now.Format("2006-01-02 15:04:05")
-	nowPIT, _ := ParseLocalTime(nowStr)
+	timeStr := now.Format("2006-01-02 15:04:05")
+	plt, err := ParseLocalTime(timeStr)
 
-	if now.Unix()-nowPIT.Unix() != 0 {
-		t.Errorf("无法把%s转换成%s，而是转换成了%s", nowStr, now, nowPIT)
-	}
+	assert.Nil(t, err, "转换失败: %s", err)
+	assert.Zero(t, now.Unix()-plt.Unix(), "无法把%s转换成%s，而是转换成了%s", timeStr, now, plt)
+
+	wrongFormat := "2006/01/02 15:04:05"
+	wrongTime, err := ParseLocalTime(wrongFormat)
+	assert.NotNil(t, err, "把错误的格式的时间%s，转换成了%s", wrongFormat, wrongTime)
 }
