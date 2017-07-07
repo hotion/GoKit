@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-//PWD like shell cmd pwd
-//PWD 返回当前目录路径
+// PWD like shell cmd pwd
+// PWD 返回当前目录路径
 func PWD() string {
 	file, _ := exec.LookPath(os.Args[0])
 	path, _ := filepath.Abs(file)
