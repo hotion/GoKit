@@ -17,9 +17,9 @@ type Error struct {
 }
 
 // Err 对Error添加新的信息，以便于追踪错误。
-func Err(information string, err error) *Error {
+func Err(err error, msgAndArgs ...interface{}) *Error {
 	return &Error{
-		Info: information,
+		Info: MessageFrom(msgAndArgs...),
 		Prev: err,
 	}
 }
