@@ -3,10 +3,33 @@ package GoKit
 import (
 	"errors"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func Test_NewErr(t *testing.T) {
-	err := errors.New("haha")
-	e := NewErr("hehe", err)
-	t.Logf("%s", e)
+func Test_Err(t *testing.T) {
+	err := errors.New("bar")
+
+	// 检查 Err
+	e := Err("foo", err)
+	assert.Equal(t, e.Info, "foo", "Error.Info 不相等")
+	assert.Equal(t, e.Prev, err, "Error.Prev 不相等")
+
+	// 检查 输出
+	e = Err("more", e)
+	expected := "more ==> foo ==> bar"
+	actual := e.Error()
+
+	assert.Equal(t, expected, actual, "格式输出出错")
+
+	// 检查 第一个 error 是 *Error 的情况
+	e = Err("bar", nil)
+	e = Err("foo", e)
+	e = Err("more", e)
+
+	expected = "more ==> foo ==> bar"
+	actual = e.Error()
+
+	assert.Equal(t, expected, actual, "格式输出出错")
+
 }
