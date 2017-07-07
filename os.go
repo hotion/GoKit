@@ -1,18 +1,11 @@
 package GoKit
 
-import (
-	"os"
-	"os/exec"
-	"path/filepath"
-	"strings"
-)
+import "os"
 
 // PWD like shell cmd pwd
-// PWD 返回当前目录路径
+// PWD 返回当前工作目录路径
+// 只是忽略了可能发生的错误
 func PWD() string {
-	file, _ := exec.LookPath(os.Args[0])
-	path, _ := filepath.Abs(file)
-	index := strings.LastIndex(path, string(os.PathSeparator))
-	ret := path[:index]
-	return ret
+	pwd, _ := os.Getwd()
+	return pwd
 }
