@@ -6,8 +6,9 @@ go:
   
 # blocklist
 branches:
-  except:
-  - develop 
+  only:
+  - master
+  - stable 
 
 before_install:
   - go get -t -v ./...
