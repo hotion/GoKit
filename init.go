@@ -1,7 +1,6 @@
 package GoKit
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -24,7 +23,7 @@ func Init(pidFile string) {
 	//保存当前程序的pid值
 	if pid := syscall.Getpid(); pid != 1 {
 		ioutil.WriteFile(pidFile, []byte(strconv.Itoa(pid)), 0777)
-		fmt.Println("PID is", pid)
+		log.Println("INFO: PID is", pid)
 	}
 }
 
