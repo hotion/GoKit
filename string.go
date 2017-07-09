@@ -2,9 +2,9 @@ package GoKit
 
 import "fmt"
 
-// MessageFrom 把msgAndArgs 格式化成消息
-// NOTICE: 使用格式 MessageFrom(msgAndArgs...)
-func MessageFrom(msgAndArgs ...interface{}) string {
+// Message 把msgAndArgs 格式化成消息
+// NOTICE: 使用方法 MessageFrom(msgAndArgs...)
+func Message(msgAndArgs ...interface{}) string {
 	switch len(msgAndArgs) {
 	case 0:
 		return ""
