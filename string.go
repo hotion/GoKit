@@ -3,7 +3,7 @@ package GoKit
 import "fmt"
 
 // Message 把msgAndArgs 格式化成消息
-// NOTICE: 使用方法 MessageFrom(msgAndArgs...)
+// NOTICE: 使用方法 Message(msgAndArgs...)
 func Message(msgAndArgs ...interface{}) string {
 	switch len(msgAndArgs) {
 	case 0:
