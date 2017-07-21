@@ -9,3 +9,13 @@ func Test_PWD(t *testing.T) {
 	expected := "/"
 	assert.Equal(t, expected, PWD(), "获取了错误的PWD")
 }
+
+// FIXME: 修复没有权限的问题。
+func Test_Mkdir(t *testing.T) {
+	dir := "testdir"
+	err := Mkdir(dir)
+	assert.Nil(t, err, "创建%s文件夹时出错", dir)
+	defer os.Remove(dir)
+
+	assert.True(t, Exist(dir), "没有创建目录%s", dir)
+}
