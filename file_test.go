@@ -22,4 +22,9 @@ func Test_Exist(t *testing.T) {
 
 	ast.True(Exist(filename), "%s存在，却反馈为不存在", filename)
 
+	dir := "testDir"
+	os.Mkdir(dir, 755)
+	defer os.Remove(dir)
+
+	ast.True(Exist(dir), "%s文件夹存在，却反馈为不存在", dir)
 }
