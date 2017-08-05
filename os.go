@@ -3,6 +3,7 @@ package GoKit
 import (
 	"fmt"
 	"os"
+	"syscall"
 )
 
 // PWD like shell cmd pwd
@@ -16,8 +17,8 @@ func PWD() string {
 // Mkdir 简化了os.Mkdir的操作
 // 会按照name，新建一个权限为0755的目录
 func Mkdir(name string) error {
-	// mask := syscall.Umask(0)
-	// defer syscall.Umask(mask)
+	mask := syscall.Umask(0)
+	defer syscall.Umask(mask)
 
 	err := os.Mkdir(name, 0755)
 	if err != nil {
