@@ -7,7 +7,8 @@ import (
 	"time"
 )
 
-// DateOf 返回一个unix tiemstamp的格式化。
+// DateOf 返回会把 timestamp 普通的日期格式
+// 例如：把	1136185384 转换成 "2006-01-02 15:03:04 +0800 CST"
 func DateOf(t int64) string {
 	return time.Unix(t, 0).String()
 }
